@@ -20,7 +20,7 @@ from app.models import Recipe
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
@@ -229,7 +229,7 @@ class BaseIngester(ABC):
             # Process each recipe
             for i, raw_recipe in enumerate(raw_recipes, 1):
                 try:
-                    self.logger.info(f"🔄 Processing recipe {i}/{len(raw_recipes)}: {raw_recipe.get('name', 'Unknown')}")
+                    self.logger.info(f"🔄 Processing recipe {i}/{len(raw_recipes)}: {raw_recipe.get('strMeal', 'Unknown')}")
                     
                     # Normalize the recipe
                     normalized_recipe = self.normalize_recipe(raw_recipe)

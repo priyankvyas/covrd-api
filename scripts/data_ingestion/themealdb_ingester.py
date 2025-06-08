@@ -169,15 +169,27 @@ class TheMealDBIngester(BaseIngester):
         for i in range(1, 21):  # They go up to 20
             ingredient_key = f"strIngredient{i}"
             measure_key = f"strMeasure{i}"
+
+            ingredient_value = raw_recipe.get(ingredient_key, "")
+            measure_value = raw_recipe.get(measure_key, "")
             
-            ingredient_name = raw_recipe.get(ingredient_key, "").strip()
-            ingredient_measure = raw_recipe.get(measure_key, "").strip()
+            if ingredient_value:
+                ingredient_name = ingredient_value.strip()
+                if measure_value:
+                    ingredient_measure = measure_value.strip()
+                else:
+                    ingredient_measure = None
+            else:
+                self.logger.debug(f"Could not extract {ingredient_key} from data for aforementioned recipe")
+                ingredient_name = None
             
             if ingredient_name:  # Only add if ingredient name exists
                 ingredients.append({
                     "name": ingredient_name,
                     "amount": ingredient_measure or "to taste"
                 })
+
+                self.logger.debug(f"Added {ingredient_name} to ingredients list")
         
         return ingredients
     
