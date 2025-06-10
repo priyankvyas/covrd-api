@@ -63,27 +63,171 @@ class BaseIngester(ABC):
             for ingredient in ingredients
         ])
         
-        # Define restriction keywords
+        # Define restriction keywords (comprehensive meat list)
         meat_keywords = [
-            "beef", "chicken", "pork", "lamb", "turkey", "duck", "fish", "salmon", 
-            "tuna", "shrimp", "crab", "lobster", "bacon", "ham", "sausage", "meat",
-            "anchovy", "prosciutto", "pancetta", "chorizo", "pepperoni"
+            # Common meats
+            "beef", "chicken", "pork", "lamb", "turkey", "duck", "goose", "rabbit",
+            "venison", "veal", "mutton", "goat", "meat", "steak", "ground beef",
+            
+            # Cuts and specific parts
+            "oxtail", "ribs", "brisket", "chuck", "sirloin", "tenderloin", "flank",
+            "drumstick", "thigh", "breast", "wing", "leg", "shoulder", "loin",
+            
+            # Processed meats
+            "bacon", "ham", "sausage", "salami", "pepperoni", "prosciutto", 
+            "pancetta", "chorizo", "pastrami", "corned beef", "hot dog", "bratwurst",
+            "mortadella", "capicola", "bresaola", "kielbasa",
+            
+            # Seafood and fish
+            "fish", "salmon", "tuna", "cod", "halibut", "tilapia", "sea bass", "trout",
+            "mackerel", "sardine", "anchovy", "herring", "sole", "flounder", "snapper",
+            "shrimp", "crab", "lobster", "scallop", "mussel", "clam", "oyster",
+            "squid", "octopus", "calamari", "prawns", "crawfish", "crayfish",
+            
+            # Poultry variations
+            "chicken breast", "chicken thigh", "chicken wing", "whole chicken",
+            "turkey breast", "ground turkey", "duck breast", "duck leg",
+            
+            # Game and organ meats
+            "liver", "kidney", "heart", "tongue", "brain", "sweetbread", "tripe",
+            "blood sausage", "boudin", "haggis",
+            
+            # Stock and broth
+            "chicken stock", "beef stock", "bone broth", "chicken broth", "beef broth",
+            "demi-glace", "meat stock", "fish stock", "seafood stock"
         ]
         
         dairy_keywords = [
-            "milk", "cheese", "butter", "cream", "yogurt", "sour cream", "cheddar",
-            "mozzarella", "parmesan", "ricotta", "cottage cheese", "whipped cream",
-            "heavy cream", "half and half", "buttermilk"
+            # Basic dairy
+            "milk", "cheese", "butter", "cream", "yogurt", "yoghurt", 
+            
+            # Milk varieties
+            "whole milk", "skim milk", "2% milk", "1% milk", "buttermilk",
+            "goat milk", "sheep milk", "buffalo milk", "condensed milk", 
+            "evaporated milk", "powdered milk", "dry milk", "milk powder",
+            
+            # Cheese varieties
+            "cheddar", "mozzarella", "parmesan", "parmigiano", "pecorino",
+            "ricotta", "cottage cheese", "cream cheese", "feta", "goat cheese",
+            "blue cheese", "brie", "camembert", "swiss", "gruyere", "gouda",
+            "provolone", "manchego", "asiago", "gorgonzola", "roquefort",
+            "mascarpone", "boursin", "queso", "paneer", "halloumi",
+            
+            # Cream varieties
+            "heavy cream", "whipping cream", "light cream", "half and half",
+            "sour cream", "crème fraîche", "whipped cream", "clotted cream",
+            "double cream", "single cream",
+            
+            # Yogurt varieties
+            "greek yogurt", "plain yogurt", "vanilla yogurt", "frozen yogurt",
+            "kefir", "labneh", "skyr",
+            
+            # Butter varieties
+            "salted butter", "unsalted butter", "clarified butter", "ghee",
+            "cultured butter", "butter substitute",
+            
+            # Ice cream and frozen
+            "ice cream", "gelato", "sorbet", "frozen custard", "sherbet",
+            "milkshake", "milk shake",
+            
+            # Dairy-based ingredients
+            "casein", "whey", "lactose", "milk solids", "milk protein",
+            "sodium caseinate", "calcium caseinate", "lactalbumin",
+            "lactoglobulin", "milk fat", "butterfat",
+            
+            # Sauces and preparations
+            "white sauce", "béchamel", "alfredo", "carbonara sauce",
+            "cheese sauce", "cream sauce", "ranch dressing", "caesar dressing"
         ]
         
         gluten_keywords = [
-            "flour", "wheat", "bread", "pasta", "spaghetti", "noodles", "barley",
-            "rye", "oats", "breadcrumbs", "soy sauce", "beer", "malt"
+            # Wheat varieties
+            "flour", "wheat", "wheat flour", "all-purpose flour", "bread flour",
+            "cake flour", "pastry flour", "self-rising flour", "whole wheat",
+            "durum wheat", "semolina", "bulgur", "wheat bran", "wheat germ",
+            "spelt", "kamut", "einkorn", "emmer", "farro",
+            
+            # Other gluten grains
+            "barley", "rye", "triticale", "malt", "malted barley", "malt extract",
+            "malt syrup", "malt vinegar", "malted milk", "beer", "ale", "lager",
+            
+            # Bread products
+            "bread", "white bread", "whole grain bread", "sourdough", "bagel",
+            "english muffin", "baguette", "ciabatta", "focaccia", "pita",
+            "naan", "tortilla", "wrap", "roll", "bun", "croissant", "brioche",
+            "breadcrumbs", "bread crumbs", "panko", "croutons",
+            
+            # Pasta and noodles
+            "pasta", "spaghetti", "linguine", "fettuccine", "penne", "rigatoni",
+            "macaroni", "fusilli", "farfalle", "ravioli", "tortellini", "gnocchi",
+            "lasagna", "noodles", "egg noodles", "ramen", "udon", "soba",
+            "couscous", "orzo",
+            
+            # Baked goods
+            "cake", "cookies", "crackers", "muffins", "donuts", "doughnuts",
+            "pastry", "pie crust", "pizza dough", "biscuits", "scones",
+            "pretzels", "wafers",
+            
+            # Cereals and grains
+            "cereal", "granola", "muesli", "oats", "oatmeal", "rolled oats",
+            "steel cut oats", "barley", "wheat berries",
+            
+            # Hidden gluten sources
+            "soy sauce", "tamari", "teriyaki", "hoisin sauce", "oyster sauce",
+            "worcestershire", "miso", "seitan", "vital wheat gluten",
+            "modified food starch", "hydrolyzed wheat protein",
+            "textured vegetable protein", "tvp",
+            
+            # Processed foods (often contain gluten)
+            "breading", "battered", "tempura", "flour tortilla", "graham crackers",
+            "matzo", "communion wafer"
         ]
         
         nut_keywords = [
-            "peanut", "almond", "walnut", "pecan", "cashew", "pistachio", 
-            "hazelnut", "macadamia", "pine nut", "brazil nut"
+            # Tree nuts
+            "almond", "almonds", "brazil nut", "brazil nuts", "cashew", "cashews",
+            "hazelnut", "hazelnuts", "macadamia", "macadamias", "pecan", "pecans",
+            "pine nut", "pine nuts", "pistachio", "pistachios", "walnut", "walnuts",
+            "chestnut", "chestnuts", "beech nut", "beech nuts", "hickory nut",
+            "black walnut", "english walnut",
+            
+            # Peanuts (technically legumes but often grouped with nuts)
+            "peanut", "peanuts", "groundnut", "groundnuts", "monkey nut",
+            
+            # Nut butters
+            "almond butter", "peanut butter", "cashew butter", "hazelnut butter",
+            "walnut butter", "pecan butter", "pistachio butter", "tahini",
+            "sunflower seed butter", "sunbutter",
+            
+            # Nut oils
+            "almond oil", "walnut oil", "hazelnut oil", "peanut oil",
+            "groundnut oil", "argan oil",
+            
+            # Nut flours and meals
+            "almond flour", "almond meal", "hazelnut flour", "walnut flour",
+            "pecan flour", "chestnut flour", "coconut flour",
+            
+            # Nut milks
+            "almond milk", "cashew milk", "hazelnut milk", "walnut milk",
+            "macadamia milk", "pecan milk", "pistachio milk",
+            
+            # Coconut (technically a fruit but often restricted with nuts)
+            "coconut", "coconut oil", "coconut milk", "coconut cream",
+            "coconut flour", "desiccated coconut", "coconut flakes",
+            "coconut butter", "coconut meat",
+            
+            # Seeds often grouped with nuts
+            "sesame", "sesame seeds", "sesame oil", "sunflower seeds",
+            "pumpkin seeds", "poppy seeds", "chia seeds", "flax seeds",
+            "hemp seeds",
+            
+            # Nut-based products
+            "marzipan", "nougat", "praline", "gianduja", "nutella",
+            "amaretto", "frangelico", "orgeat",
+            
+            # Hidden nut ingredients
+            "natural flavoring", "artificial flavoring", "nut extract",
+            "almond extract", "vanilla extract"  # Some vanilla extracts contain nuts
         ]
         
         # Detect restrictions (absence of problematic ingredients)
